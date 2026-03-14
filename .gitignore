@@ -1,0 +1,4 @@
+GameStore.React/node_modules
+GameStore.API/bin
+GameStore.API/obj
+.vscode

@@ -79,9 +79,12 @@ function App() {
 
   return (
     <>
-      <div className="page-header">
-        <h1>Game Store</h1>
-        <div className="header-actions">
+      <div className="topbar">
+        <div className="topbar-brand">
+          <span className="brand-dot" />
+          <h1>Game Store</h1>
+        </div>
+        <div className="topbar-actions">
           <button className="btn btn-ghost" onClick={fetchGames}>
             ↻ Refresh
           </button>
@@ -91,41 +94,52 @@ function App() {
         </div>
       </div>
 
-      <div className="table-wrapper">
-        <table className="games-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Genre</th>
-              <th>Price</th>
-              <th>Release Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.length === 0 ? (
+      <div className="page-body">
+        <div className="section-header">
+          <span className="section-title">Library</span>
+          <span className="game-count">
+            {data.length} {data.length === 1 ? "game" : "games"}
+          </span>
+        </div>
+
+        <div className="table-card">
+          <table className="games-table">
+            <thead>
               <tr>
-                <td colSpan={5}>
-                  <div className="empty-state">
-                    No games found. Add one to get started.
-                  </div>
-                </td>
+                <th>#</th>
+                <th>Name</th>
+                <th>Genre</th>
+                <th>Price</th>
+                <th>Release Date</th>
               </tr>
-            ) : (
-              data.map((game: Game, index: number) => (
-                <tr key={game.id}>
-                  <td className="index-cell">{index + 1}</td>
-                  <td>{game.name}</td>
-                  <td>
-                    <span className="badge-genre">{game.genre}</span>
+            </thead>
+            <tbody>
+              {data.length === 0 ? (
+                <tr>
+                  <td colSpan={5}>
+                    <div className="empty-state">
+                      <div className="empty-icon">🎮</div>
+                      <strong>No games yet</strong>
+                      <p>Add your first game to get started.</p>
+                    </div>
                   </td>
-                  <td className="price-cell">${game.price.toFixed(2)}</td>
-                  <td>{game.releaseDate}</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                data.map((game: Game, index: number) => (
+                  <tr key={game.id}>
+                    <td className="index-cell">{index + 1}</td>
+                    <td>{game.name}</td>
+                    <td>
+                      <span className="badge-genre">{game.genre}</span>
+                    </td>
+                    <td className="price-cell">${game.price.toFixed(2)}</td>
+                    <td className="date-cell">{game.releaseDate}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {showModal && (
@@ -136,11 +150,7 @@ function App() {
           <div className="modal">
             <div className="modal-header">
               <h2>Add New Game</h2>
-              <button
-                className="modal-close"
-                onClick={closeModal}
-                aria-label="Close"
-              >
+              <button className="modal-close" onClick={closeModal} aria-label="Close">
                 ✕
               </button>
             </div>
@@ -173,32 +183,36 @@ function App() {
                 </select>
               </div>
 
-              <div className="form-field">
-                <label htmlFor="game-price">Price ($)</label>
-                <input
-                  id="game-price"
-                  type="number"
-                  placeholder="e.g. 59.99"
-                  min="0"
-                  step="0.01"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label htmlFor="game-price">Price ($)</label>
+                  <input
+                    id="game-price"
+                    type="number"
+                    placeholder="59.99"
+                    min="0"
+                    step="0.01"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
 
-              <div className="form-field">
-                <label htmlFor="game-date">Release Date</label>
-                <input
-                  id="game-date"
-                  type="date"
-                  value={releaseDate}
-                  onChange={(e) => setReleaseDate(e.target.value)}
-                />
+                <div className="form-field">
+                  <label htmlFor="game-date">Release Date</label>
+                  <input
+                    id="game-date"
+                    type="date"
+                    value={releaseDate}
+                    onChange={(e) => setReleaseDate(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
 
+            <div className="form-divider" />
+
             <div className="form-actions">
-              <button className="btn btn-danger" onClick={closeModal}>
+              <button className="btn btn-muted" onClick={closeModal}>
                 Cancel
               </button>
               <button className="btn btn-primary" onClick={addGame}>
